@@ -10,14 +10,15 @@ define(['eventtarget', 'geometry/point'], function (EventTarget, Point) {
     function forceToForceVector(force, angle) {
         return new Point(force * Math.cos(angle), force * Math.sin(angle));
     }
+    window.forceToForceVector = forceToForceVector;
     function forceVectorToForce(forceVector) {
         return forceVector.x + forceVector.y;   
     }
 
     function calcGravityForce(m1, m2, p1, p2) {
-        if (p1.x === p2.x && p1.y === p2.y) return 0;
+        if (p1.equals(p2)) return 0;
 
-        var dist = p1.getDistanceTo(p2);
+        var dist = p1.distanceTo(p2);
         return (G * (m1 * m2)) / Math.pow(dist, 2);
     }
 
@@ -25,16 +26,16 @@ define(['eventtarget', 'geometry/point'], function (EventTarget, Point) {
         return calcGravityForce(o1.mass, o2.mass, o1.position, o2.position);
     }
 
-    function ForceLoop(List, tickDelta, ctx) {
+    function ForceLoop(List, tickDelta) {
         var perSec = tickDelta / 1000;
         _.each(List, function (firstObject, firstIndex) {
             _.each(List, function (secondObject, secondIndex) {
                 if (firstIndex === secondIndex) //That means its the same object
                     return;
                 var gForce = calcGravityForceObjects(firstObject, secondObject);
-                firstObject.addForce(gForce, firstObject.position.angleBetween(secondObject.position));
+                firstObject.addForce(gForce, secondObject.position);
             });
-            testCollision(List, firstObject, perSec);
+            //testCollision(List, firstObject, perSec);
         });
         forceEmitter.emit({
             'type': 'applyForce',
