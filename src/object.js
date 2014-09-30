@@ -228,10 +228,10 @@ define(['lib/underscore', 'force', 'geometry/point', 'geometry/rectangle'], func
 
     };
 
-    Object.prototype.addForce = function (force, angle) {
+    Object.prototype.addForce = function (force, p2) {
         if (this.mass >= 0) {
             //If angle wasn't sent in, then we assume that force is a vector
-            var fv = angle ? ForceObj.forceToForceVector(force, angle) : force;
+            var fv = p2 ? ForceObj.forceToForceVector(force, this.position.angleTo(p2)) : force;
             this.forceVector.addPoint(fv)
             this.accleration.addPoint(new Point(fv.x / this.mass, fv.y / this.mass));
         }
