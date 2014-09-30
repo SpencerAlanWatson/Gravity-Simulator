@@ -67,10 +67,10 @@ define([], function () {
      * @param   {Point} otherPoint The Point to find the distance between
      * @returns {Number} The Distance
      */
-    Point.prototype.distanceTo = function (otherPoint) {
+    Point.prototype.getDistanceTo = function (otherPoint) {
         return Math.sqrt(Math.pow(this.x - otherPoint.x, 2) + Math.pow(this.y - otherPoint.y, 2));
     };
-    Point.prototype.distanceToSquared = function (otherPoint) {
+    Point.prototype.getDistanceToSquared = function (otherPoint) {
         return Math.pow(this.x - otherPoint.x, 2) + Math.pow(this.y - otherPoint.y, 2);
     }
     Point.prototype.getNormals = function (other) {
@@ -115,7 +115,7 @@ define([], function () {
      * @param   {Point}   otherPoint
      * @returns {Number} The Angle in Radians
      */
-    Point.prototype.angleTo = function (otherPoint) {
+    Point.prototype.angleBetween = function (otherPoint) {
         var dx = otherPoint.x - this.x,
             dy = otherPoint.y - this.y;
         return Math.atan2(dy, dx);
@@ -135,10 +135,6 @@ define([], function () {
         this.y *= val;
         return this;
     };
-    
-    Point.prototype.equals = function (p2) {
-        return this.x === p2.x && this.y === p2.y;
-    }
 
     Point.prototype.clone = function () {
         return new Point(this.x, this.y);
